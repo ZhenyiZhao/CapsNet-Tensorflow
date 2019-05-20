@@ -2,6 +2,7 @@ import os
 import scipy
 import numpy as np
 import tensorflow as tf
+from PIL import Image
 
 
 def load_mnist(batch_size, is_training=True):
@@ -36,6 +37,38 @@ def load_mnist(batch_size, is_training=True):
 
         num_te_batch = 10000 // batch_size
         return teX / 255., teY, num_te_batch
+
+def load_mydata(batch_size, is_training=True):
+    images = []
+    labels = []
+    for fn in os.listdir('./data/captcha'):
+        ft = os.path.join('./data/captcha/', fn)
+        print(ft)
+        if fn == '.DS_Store':
+            continue
+        for fd in os.listdir(ft):
+            if fd.endswith('.png'):
+                img = os.path.join(ft, fd)
+                fp = open(img, 'rb')
+                pic = np.array(Image.open(fp))
+                images.append(pic)
+                labels.append(fn)
+                fp.close()
+    train = np.array(images)
+    train = train.reshape((11794, 66, 66, 3)).astype(np.float32)
+    labels = labels.reshape((11794))
+    trX = train[:10000] / 255.
+    trY = labels[:10000]
+    valX = train[10000:] / 255.
+    valY = labels[10000:]
+    num_tr_batch = 10000 // batch_size
+    num_val_batch = 1794 // batch_size
+    if is_training:
+        return trX, trY, num_tr_batch, valX, valY, num_val_batch
+    else:
+
+        return train / 255., labels, 11794 // batch_size
+
 
 
 def load_fashion_mnist(batch_size, is_training=True):
