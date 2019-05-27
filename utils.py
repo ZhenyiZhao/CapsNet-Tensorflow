@@ -110,6 +110,8 @@ def load_data(dataset, batch_size, is_training=True, one_hot=False):
         return load_mnist(batch_size, is_training)
     elif dataset == 'fashion-mnist':
         return load_fashion_mnist(batch_size, is_training)
+    elif dataset == 'my-data':
+        return load_mydata(batch_size, is_training)
     else:
         raise Exception('Invalid dataset, please check the name of dataset:', dataset)
 
@@ -119,6 +121,8 @@ def get_batch_data(dataset, batch_size, num_threads):
         trX, trY, num_tr_batch, valX, valY, num_val_batch = load_mnist(batch_size, is_training=True)
     elif dataset == 'fashion-mnist':
         trX, trY, num_tr_batch, valX, valY, num_val_batch = load_fashion_mnist(batch_size, is_training=True)
+    elif dataset == 'my-data':
+        trX, trY, num_tr_batch, valX, valY, num_val_batch = load_mydata(batch_size, is_training=True)
     data_queues = tf.train.slice_input_producer([trX, trY])
     X, Y = tf.train.shuffle_batch(data_queues, num_threads=num_threads,
                                   batch_size=batch_size,
