@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 import random
 
 import scipy
@@ -43,12 +44,14 @@ def load_mnist(batch_size, is_training=True):
 def load_mydata(batch_size, is_training=True):
     images = []
     labels = []
+    map = []
     i = 0
     for fn in os.listdir('./data/captcha'):
         ft = os.path.join('./data/captcha/', fn)
         print(ft)
         if fn == '.DS_Store':
             continue
+        map.append([i,fn])
         for fd in os.listdir(ft):
             if fd.endswith('.png'):
                 img = os.path.join(ft, fd)
@@ -58,6 +61,9 @@ def load_mydata(batch_size, is_training=True):
                 labels.append(i)
                 fp.close()
         i = i + 1
+    #print(map)
+    table = pd.DataFrame(map)
+    table.to_csv('table.csv',index = False)
     train = np.array(images)
     train = train.reshape((11794, 66, 66, 3)).astype(np.float32)
     li = np.arange(11794)
