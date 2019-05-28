@@ -17,7 +17,7 @@ epsilon = 1e-9
 
 
 class CapsNet(object):
-    def __init__(self, is_training=True, height=28, width=28, channels=1, num_label=10):
+    def __init__(self, is_training=True, height=66, width=66, channels=3, num_label=80):
         """
         Args:
             height: Integer, the height of inputs.

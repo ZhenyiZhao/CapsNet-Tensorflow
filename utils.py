@@ -41,6 +41,7 @@ def load_mnist(batch_size, is_training=True):
 def load_mydata(batch_size, is_training=True):
     images = []
     labels = []
+    i = 0
     for fn in os.listdir('./data/captcha'):
         ft = os.path.join('./data/captcha/', fn)
         print(ft)
@@ -52,11 +53,13 @@ def load_mydata(batch_size, is_training=True):
                 fp = open(img, 'rb')
                 pic = np.array(Image.open(fp))
                 images.append(pic)
-                labels.append(fn)
+                labels.append(i)
                 fp.close()
+        i = i + 1
     train = np.array(images)
     train = train.reshape((11794, 66, 66, 3)).astype(np.float32)
-    labels = labels.reshape((11794))
+
+    labels = np.array(labels).reshape((11794))
     trX = train[:10000] / 255.
     trY = labels[:10000]
     valX = train[10000:] / 255.
