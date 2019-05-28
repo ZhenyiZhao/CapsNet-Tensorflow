@@ -1,4 +1,6 @@
 import os
+import random
+
 import scipy
 import numpy as np
 import tensorflow as tf
@@ -58,8 +60,11 @@ def load_mydata(batch_size, is_training=True):
         i = i + 1
     train = np.array(images)
     train = train.reshape((11794, 66, 66, 3)).astype(np.float32)
-
+    li = np.arange(11794)
+    np.random.shuffle(li)
+    train = train[li,:,:,:]
     labels = np.array(labels).reshape((11794))
+    labels = labels[li]
     trX = train[:10000] / 255.
     trY = labels[:10000]
     valX = train[10000:] / 255.
